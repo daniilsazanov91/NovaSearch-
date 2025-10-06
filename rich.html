@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NovaSearch | Умный поиск</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 30% 30%, #111827, #000);
+      color: #f3f4f6;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      text-align: center;
+      backdrop-filter: blur(10px);
+      width: 340px;
+    }
+
+    h1 {
+      margin-bottom: .5rem;
+      font-size: 1.6rem;
+      color: #60a5fa;
+    }
+
+    p {
+      font-size: .95rem;
+      color: #d1d5db;
+      margin-bottom: 1.5rem;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: .7rem 1.4rem;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    button:hover {
+      background: #3b82f6;
+      transform: translateY(-2px);
+    }
+
+    .search-box {
+      margin-top: 1.5rem;
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    input[type="text"] {
+      width: 80%;
+      padding: .6rem;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      font-size: .95rem;
+      margin-right: .5rem;
+    }
+
+    input[type="text"]::placeholder {
+      color: #9ca3af;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>NovaSearch</h1>
+    <p>Формальный, точный, но говорит как Gen Z.  
+       Код чистый — стиль на месте ⚡</p>
+
+    <button id="toggleSearch">Проверить вайб</button>
+
+    <div class="search-box" id="searchBox">
+      <input type="text" id="searchInput" placeholder="Введите запрос..." />
+      <button id="searchBtn">Найти</button>
+    </div>
+  </div>
+
+  <script>
+    const toggleBtn = document.getElementById('toggleSearch');
+    const searchBox = document.getElementById('searchBox');
+    const searchBtn = document.getElementById('searchBtn');
+    const searchInput = document.getElementById('searchInput');
+
+    // Показ / скрытие строки поиска
+    toggleBtn.addEventListener('click', () => {
+      if (searchBox.style.display === 'none' || searchBox.style.display === '') {
+        searchBox.style.display = 'block';
+        toggleBtn.textContent = 'Скрыть поиск';
+        searchInput.focus();
+      } else {
+        searchBox.style.display = 'none';
+        toggleBtn.textContent = 'Проверить вайб';
+      }
+    });
+
+    // Поиск запроса в Google
+    searchBtn.addEventListener('click', () => {
+      const query = searchInput.value.trim();
+      if (query) {
+        const url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+        window.open(url, '_blank');
+      } else {
+        alert('Введите запрос для поиска 🧠');
+      }
+    });
+
+    // Позволяет искать нажатием Enter
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        searchBtn.click();
+      }
+    });
+  </script>
+</body>
+</html>
+
