@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nova Git — Дополнительная нейросеть</title>
+  <meta name="description" content="Nova Git — лёгкая встраиваемая нейросеть для генерации любого текста и кода прямо в браузере." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    pre code {white-space: pre-wrap;word-break:break-word}
+    .glass {backdrop-filter: blur(6px); background-color: rgba(255,255,255,0.6)}
+    .neon {text-shadow: 0 0 10px #06b6d4, 0 0 20px #06b6d4, 0 0 40px #3b82f6;}
+  </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-white text-slate-800 antialiased">
+  <header class="sticky top-0 z-40 border-b bg-white/60 backdrop-blur-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-md flex items-center justify-center bg-gradient-to-tr from-indigo-500 to-cyan-400 text-white font-semibold">NG</div>
+        <div>
+          <h1 class="text-lg font-semibold neon">Nova Git</h1>
+          <p class="text-xs text-slate-500">Дополнительная нейросеть — генерация любого контента</p>
+        </div>
+      </div>
+      <nav class="hidden md:flex gap-4 items-center text-sm">
+        <a href="#demo" class="hover:underline">Демо</a>
+        <a href="#about" class="hover:underline">О проекте</a>
+        <a href="#contact" class="px-3 py-1 rounded-md border hover:bg-slate-50">Связаться</a>
+      </nav>
+      <div class="md:hidden">
+        <button id="mobileToggle" class="p-2">☰</button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="md:hidden hidden border-t">
+      <div class="px-4 py-3 flex flex-col gap-2">
+        <a href="#demo">Демо</a>
+        <a href="#about">О проекте</a>
+        <a href="#contact">Связаться</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 py-12 space-y-20">
+    <section id="demo" class="glass p-6 rounded-xl shadow-lg">
+      <h2 class="text-3xl font-extrabold mb-4">Nova Git — попробуй задать любой вопрос</h2>
+      <p class="text-slate-600 mb-6">Введите запрос, и нейросеть Nova Git сгенерирует ответ прямо в браузере. Пример: «Напиши CSS для кнопки» или «Что такое IPv6?»</p>
+      <div class="mb-3">
+        <label class="text-xs text-slate-500">Ваш запрос</label>
+        <textarea id="prompt" rows="3" class="w-full mt-1 p-2 border rounded" placeholder="Например: напиши HTML для карточки профиля..."></textarea>
+      </div>
+      <div class="flex gap-2">
+        <button id="runBtn" class="px-3 py-2 rounded bg-cyan-600 text-white">Сгенерировать</button>
+        <button id="clearBtn" class="px-3 py-2 rounded border">Очистить</button>
+      </div>
+      <div id="output" class="mt-4 p-3 bg-white border rounded min-h-[100px] whitespace-pre-wrap"></div>
+      <p class="text-xs text-slate-400 mt-2">Результат формируется локально (эмуляция ИИ).</p>
+    </section>
+
+    <section id="about" class="p-6 rounded-xl border bg-white shadow-sm">
+      <h2 class="text-2xl font-bold mb-4">О проекте Nova Git</h2>
+      <p class="text-slate-700 leading-relaxed">Nova Git — это демонстрационный интерфейс, показывающий, как можно интегрировать локальные или облачные ИИ‑модули для генерации контента, кода и обучающих примеров прямо в браузере. Система способна адаптироваться под контекст пользователя и обеспечивать мгновенную обратную связь без серверной части.</p>
+      <ul class="list-disc pl-6 mt-4 text-slate-600">
+        <li>Полностью автономный интерфейс (работает оффлайн).</li>
+        <li>Поддержка русских и английских запросов.</li>
+        <li>Расширяемая архитектура: можно подключить OpenAI API или локальную LLM.</li>
+      </ul>
+    </section>
+
+    <section id="contact" class="p-6 rounded-xl border bg-white shadow-sm">
+      <h2 class="text-2xl font-bold mb-4">Связаться</h2>
+      <p class="text-slate-600 mb-4">Хотите использовать Nova Git в своём проекте? Свяжитесь с разработчиком:</p>
+      <div class="space-y-2 text-slate-700">
+        <p>Telegramm: <a href="https://t.me/amsuzzz" class="text-cyan-600 hover:underline">dev@novagit.ai</a></p>
+        <p>GitHub: <a href="https://github.com/daniilsazanov91" target="_blank" class="text-cyan-600 hover:underline">@daniilsazanov91</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t py-6">
+    <div class="max-w-6xl mx-auto px-4 text-sm text-slate-600 flex flex-col md:flex-row justify-between items-center gap-3">
+      <div>© Nova Git — 2025 • Нейросеть для генерации и обучения</div>
+      <div class="text-xs">Разработано сайтом Nova-Search.vercel • Лицензия MIT</div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.getElementById('mobileToggle').addEventListener('click', ()=>{
+      const m = document.getElementById('mobileMenu'); m.classList.toggle('hidden');
+    });
+
+    const runBtn = document.getElementById('runBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const promptEl = document.getElementById('prompt');
+    const output = document.getElementById('output');
+
+    function fakeAIResponse(prompt){
+      const lower = prompt.toLowerCase();
+      if(lower.includes('css')) return `/* Пример CSS */\nbutton { background: linear-gradient(to right, #3b82f6, #06b6d4); color:white; padding:10px 16px; border:none; border-radius:8px; }`;
+      if(lower.includes('html')) return `<!-- Пример HTML -->\n<div class='card'><h3>Профиль пользователя</h3><p>Имя: Nova Git</p></div>`;
+      if(lower.includes('js') || lower.includes('javascript')) return `// Пример JavaScript\nconsole.log('Nova Git готов к работе!');`;
+      if(lower.includes('python')) return `# Пример Python\ndef greet():\n    print('Привет от Nova Git!')`;
+      if(lower.includes('ipv6')) return `IPv6 — это протокол нового поколения, использующий 128-битные адреса для поддержки огромного количества устройств.`;
+      return `Nova Git: ${prompt}\n\n[Сгенерировано локально — пример ответа]`;
+    }
+
+    runBtn.addEventListener('click', ()=>{
+      const p = promptEl.value.trim();
+      if(!p){ output.innerText = 'Введите запрос.'; return; }
+      output.innerHTML = 'Генерация...';
+      setTimeout(()=>{ output.innerText = fakeAIResponse(p); }, 700);
+    });
+
+    clearBtn.addEventListener('click', ()=>{ promptEl.value=''; output.innerText=''; });
+  </script>
+</body>
+</html>
