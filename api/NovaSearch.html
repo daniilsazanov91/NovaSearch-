@@ -1,0 +1,14 @@
+<button id="buyPro" class="pro-btn">Купить Pro</button>
+
+<script>
+document.getElementById("buyPro").onclick = async () => {
+  const res = await fetch("/api/create-checkout-session", { method: "POST" });
+  const data = await res.json();
+
+  if (data.url) {
+    window.location.href = data.url;
+  } else {
+    alert("Ошибка при создании сессии оплаты.");
+  }
+};
+</script>
